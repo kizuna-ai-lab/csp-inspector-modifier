@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Redirector Test Page</title>
+</head>
+<body>
+    <h1>Script Redirector Extension Test Page</h1>
+    <p>This page includes a script tag pointing to example.com/myscript.js for testing purposes.</p>
+    
+    <!-- 这是需要被重定向的脚本 -->
+    <script src="https://example.com/myscript.js"></script>
+    
+    <div id="result">
+        <p>如果脚本重定向成功，这里会显示一些内容。</p>
+    </div>
+
+    <script>
+        // 检查是否有全局变量或函数被加载的脚本定义
+        window.addEventListener('load', function() {
+            // 检查页面上是否有绿色指示器元素，这是myscript.js创建的
+            console.log('页面加载完成，检查脚本重定向状态...');
+            
+            // 给脚本一些时间来执行
+            setTimeout(function() {
+                // 检查是否有指示器元素（由myscript.js创建）
+                const indicator = document.querySelector('div[style*="background: rgba(0, 128, 0, 0.8)"]');
+                if (indicator) {
+                    document.getElementById('result').innerHTML = '<p style="color: green;">重定向成功！本地脚本已加载并执行。</p>';
+                } else {
+                    document.getElementById('result').innerHTML = '<p style="color: red;">重定向可能未成功。请检查扩展配置。</p>';
+                }
+            }, 1500); // 给更多时间让脚本执行
+        });
+    </script>
+</body>
+</html>

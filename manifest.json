@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "CSP Inspector & Modifier",
+  "version": "1.0",
+  "description": "Tests and modifies Content Security Policy (CSP) headers for web application testing and development",
+  "permissions": [
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://teams.live.com/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules_1.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://teams.live.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["csp-test-manual.js"],
+      "matches": ["https://teams.live.com/*"]
+    }
+  ]
+}

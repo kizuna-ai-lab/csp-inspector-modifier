@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "cache-control", "operation": "remove" },
+        { "header": "content-security-policy", "operation": "remove" },
+        { "header": "content-security-policy-report-only", "operation": "remove" },
+        { "header": "x-my-header", "operation": "set", "value": "true" }
+      ]
+    },
+    "condition": {
+      "urlFilter": "|https://teams.live.com"
+    }
+  },
+  {
+    "id": 2,
+    "priority": 2,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "x-second-header", "operation": "set", "value": "test" }
+      ]
+    },
+    "condition": {
+      "domains": ["teams.live.com"],
+      "urlFilter": "https://teams.live.com/*"
+    }
+  }
+]
