@@ -282,7 +282,12 @@
   
   // For easy removal of overlay from console if needed
   window.removeCSPTestOverlay = function() {
-    const overlay = document.querySelector('div[style*="CSP Header Check Results"]');
+    // The overlay is created with id "csp-test-overlay" so it's safer to
+    // select it directly by id. Previously we attempted to locate the
+    // element using a partial style match with text "CSP Header Check
+    // Results", which does not exist and prevented the overlay from being
+    // removed.
+    const overlay = document.getElementById('csp-test-overlay');
     if (overlay) overlay.remove();
     console.log("CSP test overlay removed");
   };
