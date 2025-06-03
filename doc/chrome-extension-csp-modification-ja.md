@@ -229,11 +229,14 @@ window.removeCSPTestOverlay = function() {
 
 1. **初期化フロー**:
    - ユーザーがターゲットWebサイト（https://teams.live.com/v2/）にアクセス
-     - 注意：初回アクセス時は、documentタイプのリクエストに対するヘッダー変更は適用されません
-   - ページを更新し、拡張機能のルールが完全に適用されることを確認
-     - 更新後、documentタイプのリクエストにもヘッダー変更が適用されます
-   - 拡張機能のルールが自動的に適用され、CSPヘッダーが削除される
-   - content.jsが挿入され実行される
+     - **注意：declarativeNetRequestルールはネットワークスタックに到達するリクエストにのみ適用されます**
+     - Service Workerが独自のCacheStorageから返すレスポンスには影響しません
+     - Service Workerが`respondWith(caches.match(event.request))`を直接使用する場合、DNRルールは永遠に適用されません
+   - ページを更新（F5）すると、Service Workerがネットワークから新しいリソースを取得する可能性があります
+     - このとき、リクエストは実際のネットワークスタックを通過し、拡張機能のルールが有効になります
+     - 一方、Ctrl+Shift+Rを使用しても、ブラウザの標準HTTPキャッシュのみがバイパスされ、多くのPWAのService Workerは依然としてこれらのリクエストをインターセプトします
+   - 拡張機能のルールが正常に適用されると、CSPヘッダーが削除されます
+   - content.jsが挿入され実行されます
 
 2. **テストプロセス**:
    - content.jsがcsp-test-manual.jsを読み込もうとする

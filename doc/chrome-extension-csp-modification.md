@@ -229,10 +229,13 @@ window.removeCSPTestOverlay = function() {
 
 1. **初始化流程**:
    - 用户访问目标网站（https://teams.live.com/v2/）
-     - 注意：第一次访问时，对于document类型的请求，header修改不会生效
-   - 刷新页面，确保扩展规则完全应用
-     - 刷新后，对document类型的请求，header修改将会生效
-   - 扩展的规则自动应用，移除CSP头信息
+     - **注意：declarativeNetRequest规则只适用于到达网络堆栈的请求**
+     - 它不会影响Service Worker从其自己的CacheStorage返回的响应
+     - 如果Service Worker直接使用`respondWith(caches.match(event.request))`，则DNR规则永远没有机会生效
+   - 刷新页面（F5），可能触发Service Worker从网络拉取新资源
+     - 这时请求会经过真正的网络堆栈，扩展规则才能生效
+     - 而使用Ctrl+Shift+R只能绕过浏览器自带的HTTP缓存，但大多PWA的Service Worker仍然会拦截这些请求
+   - 当扩展规则成功应用时，将移除CSP头信息
    - content.js被注入并执行
 
 2. **测试过程**:
