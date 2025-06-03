@@ -232,6 +232,9 @@ window.removeCSPTestOverlay = function() {
      - **注意：declarativeNetRequest规则只适用于到达网络堆栈的请求**
      - 它不会影响Service Worker从其自己的CacheStorage返回的响应
      - 如果Service Worker直接使用`respondWith(caches.match(event.request))`，则DNR规则永远没有机会生效
+     - **特别说明：Teams和其他Microsoft 365 Web App在Service Worker中的缓存策略非常激进**
+     - 它们每次进入都会检查缓存或进行“条件GET”，因此在Teams上更容易观察到“先不生效/F5生效/Ctrl+Shift+R不生效”的切换现象
+     - 相比之下，一些其他网站的Service Worker策略可能不那么激进，普通刷新一次就会持续走网络流量，dNR规则就会持续生效
    - 刷新页面（F5），可能触发Service Worker从网络拉取新资源
      - 这时请求会经过真正的网络堆栈，扩展规则才能生效
      - 而使用Ctrl+Shift+R只能绕过浏览器自带的HTTP缓存，但大多PWA的Service Worker仍然会拦截这些请求

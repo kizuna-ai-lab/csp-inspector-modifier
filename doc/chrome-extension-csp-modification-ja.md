@@ -232,6 +232,9 @@ window.removeCSPTestOverlay = function() {
      - **注意：declarativeNetRequestルールはネットワークスタックに到達するリクエストにのみ適用されます**
      - Service Workerが独自のCacheStorageから返すレスポンスには影響しません
      - Service Workerが`respondWith(caches.match(event.request))`を直接使用する場合、DNRルールは永遠に適用されません
+     - **特記：Teamsやその他のMicrosoft 365 Web AppはService Worker内で非常に積極的なキャッシュ戦略を採用しています**
+     - これらは毎回アクセス時にキャッシュをチェックしたり「条件付きGET」を実行したりするため、Teamsでは「最初は効かない/F5で効く/Ctrl+Shift+Rで効かない」という切り替わりが観察しやすいです
+     - 対照的に、他のサイトのService Workerはより積極的ではないキャッシュ戦略を持つことが多く、通常の更新でネットワークトラフィックを使用し続けるため、dNRルールが持続的に有効になります
    - ページを更新（F5）すると、Service Workerがネットワークから新しいリソースを取得する可能性があります
      - このとき、リクエストは実際のネットワークスタックを通過し、拡張機能のルールが有効になります
      - 一方、Ctrl+Shift+Rを使用しても、ブラウザの標準HTTPキャッシュのみがバイパスされ、多くのPWAのService Workerは依然としてこれらのリクエストをインターセプトします
